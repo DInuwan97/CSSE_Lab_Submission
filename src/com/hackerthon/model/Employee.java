@@ -1,6 +1,6 @@
 package com.hackerthon.model;
 
-public class E {
+public class Employee {
 
 	public String employeeId;
 	public String fullName;
@@ -8,6 +8,17 @@ public class E {
 	public String facultyName;
 	public String department;
 	public String designation;
+	
+	private static Employee obj;
+	
+	private Employee() {}
+	
+	public static synchronized Employee getInstance() {
+		 if (obj==null) 
+	            obj = new Employee(); 
+	        return obj; 
+	}
+	
 	public String getEmployeeId() {
 		return employeeId;
 	}

@@ -30,7 +30,7 @@ public class UtilTransform extends UtilC {
 
 	private static Map<String, String> m = null;
 
-	public static void rEQUESTtRANSFORM() throws Exception {
+	public static void requestTransform() throws Exception {
 
 		Source x = new StreamSource(new File("src/com/hackerthon/config/EmployeeRequest.xml"));
 		Source s = new StreamSource(new File("src/com/hackerthon/config/Employee-modified.xsl"));
