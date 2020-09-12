@@ -38,7 +38,7 @@ public class getEmpService extends UtilC {
 		} 
 	}
 
-	public void EMPLOEESFROMXML() {
+	public void employeesFromXML() {
 
 		try {
 			int s = UtilTransform.XMLXPATHS().size();
@@ -58,7 +58,7 @@ public class getEmpService extends UtilC {
 		}
 	}
 
-	public void eMPLOYEEtABLEcREATE() {
+	public void employeeTableCreate() {
 		try {
 			s = c.createStatement();
 			s.executeUpdate(UtilQ.Q("q2"));
@@ -67,7 +67,7 @@ public class getEmpService extends UtilC {
 		}
 	}
 
-	public void eMPLOYEESaDD() {
+	public void employessAdd() {
 		try {
 			ps = c.prepareStatement(UtilQ.Q("q3"));
 			c.setAutoCommit(false);
@@ -87,7 +87,7 @@ public class getEmpService extends UtilC {
 		}
 	}
 
-	public void eMPLOYEEGETBYID(String eid) {
+	public void employeeGetById(String eid) {
 
 		E e = new E();
 		try {
@@ -95,12 +95,12 @@ public class getEmpService extends UtilC {
 			ps.setString(1, eid);
 			ResultSet R = ps.executeQuery();
 			while (R.next()) {
-				e.eMPLOYEEiD(R.getString(1));
-				e.fULLnAME(R.getString(2));
-				e.aDDRESS(R.getString(3));
-				e.fACULTYNAME(R.getString(4));
-				e.dEPARTMENT(R.getString(5));
-				e.dESIGNATION(R.getString(6));
+				e.setEmployeeId(R.getString(1));
+				e.setFullName(R.getString(2));
+				e.setAddress(R.getString(3));
+				e.setFacultyName(R.getString(4));
+				e.setDepartment(R.getString(5));
+				e.setDesignation(R.getString(6));
 			}
 			ArrayList<E> l = new ArrayList<E>();
 			l.add(e);
@@ -120,7 +120,7 @@ public class getEmpService extends UtilC {
 		}
 	}
 
-	public void eMPLOYEEdISPLAY() {
+	public void employeeDisplay() {
 
 		ArrayList<E> l = new ArrayList<E>();
 		try {
@@ -128,12 +128,12 @@ public class getEmpService extends UtilC {
 			ResultSet r = ps.executeQuery();
 			while (r.next()) {
 				E e = new E();
-				e.eMPLOYEEiD(r.getString(1));
-				e.fULLnAME(r.getString(2));
-				e.aDDRESS(r.getString(3));
-				e.fACULTYNAME(r.getString(4));
-				e.dEPARTMENT(r.getString(5));
-				e.dESIGNATION(r.getString(6));
+				e.setEmployeeId(r.getString(1));
+				e.setFullName(r.getString(2));
+				e.setAddress(r.getString(3));
+				e.setFacultyName(r.getString(4));
+				e.setDepartment(r.getString(5));
+				e.setDesignation(r.getString(6));
 				l.add(e);
 			}
 		} catch (Exception e) {
@@ -149,9 +149,8 @@ public class getEmpService extends UtilC {
 				.println("================================================================================================================");
 		for(int i = 0; i < l.size(); i++){
 			E e = l.get(i);
-			System.out.println(e.EMPLOYEEiDgET() + "\t" + e.fULLnAMEgET() + "\t\t"
-					+ e.aDDRESSgET() + "\t" + e.fACULTYnAMEgET() + "\t" + e.dEPARTMENTgET() + "\t"
-					+ e.dESIGNATIONgET() + "\n");
+			System.out.println(e.getEmployeeId() + "\t" + e.getFullName() + "\t" + e.getDepartment() + "\t"
+					+ e.getDesignation() + "\n");
 			System.out
 			.println("----------------------------------------------------------------------------------------------------------------");
 		}

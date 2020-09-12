@@ -17,12 +17,11 @@ public class ExecuteMain {
 		getEmpService employeeService = new getEmpService();
 		try {
 			UtilTransform.rEQUESTtRANSFORM();
-			employeeService.EMPLOEESFROMXML();
-			employeeService.eMPLOYEEtABLEcREATE();
-			employeeService.eMPLOYEESaDD();
-//			employeeService.eMPLOYEEGETBYID("EMP10004");
-//			employeeService.EMPLOYEEDELETE("EMP10001");
-			employeeService.eMPLOYEEdISPLAY();
+			employeeService.employeesFromXML();;
+			employeeService.employeeTableCreate();
+			employeeService.employessAdd();
+
+			employeeService.employeeDisplay();
 		} catch (Exception e) {
 		}
 

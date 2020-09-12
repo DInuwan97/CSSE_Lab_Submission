@@ -46,8 +46,12 @@ public class E {
 	}
 	@Override
 	public String toString() {
-		return "E [employeeId=" + employeeId + ", fullName=" + fullName + ", address=" + address + ", facultyName="
-				+ facultyName + ", department=" + department + ", designation=" + designation + "]";
+		return "Employee Id=" + employeeId + "\n"
+				+ "Full Name=" + fullName + "\n"
+				+ "Address=" + address + "\n"
+				+ "Faculty Name=" + facultyName + "\n"
+				+ "Department=" + department + "\n"
+				+ "Designation=" + designation + "";
 	}
 
 }
