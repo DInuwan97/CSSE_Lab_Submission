@@ -1,10 +1,13 @@
 package com.hackerthon.main;
 
+import java.util.logging.Level;
+
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactoryConfigurationError;
 
 import com.hackerthon.common.UtilTransform;
+import com.hackerthon.logger.CustomLogger;
 import com.hackerthon.service.GetEmpService;
 
 public class ExecuteMain {
@@ -23,6 +26,8 @@ public class ExecuteMain {
 
 			employeeService.employeeDisplay();
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 
 	}

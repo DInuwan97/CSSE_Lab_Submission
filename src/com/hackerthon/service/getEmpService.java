@@ -8,6 +8,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.sql.PreparedStatement;
 import javax.xml.xpath.XPathExpressionException;
 import com.hackerthon.common.UtilTransform;
+import com.hackerthon.logger.CustomLogger;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -35,6 +37,8 @@ public class GetEmpService extends UtilC {
 			c = DriverManager.getConnection(p.getProperty("url"), p.getProperty("username"),
 					p.getProperty("password"));
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		} 
 	}
 
@@ -57,6 +61,8 @@ public class GetEmpService extends UtilC {
 				System.out.println(emp.toString() + "\n");
 			}
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -66,6 +72,8 @@ public class GetEmpService extends UtilC {
 			s.executeUpdate(UtilQ.Q("q2"));
 			s.executeUpdate(UtilQ.Q("q1"));
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -86,6 +94,8 @@ public class GetEmpService extends UtilC {
 			ps.executeBatch();
 			c.commit();
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -109,6 +119,8 @@ public class GetEmpService extends UtilC {
 			l.add(e);
 			employeeOutput(l);
 		} catch (Exception ex) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -119,7 +131,9 @@ public class GetEmpService extends UtilC {
 			ps.setString(1, eid);
 			ps.executeUpdate();
 		} catch (Exception e) {
-			e.printStackTrace();
+			// e.printStackTrace();
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 	}
 
@@ -140,6 +154,8 @@ public class GetEmpService extends UtilC {
 				l.add(e);
 			}
 		} catch (Exception e) {
+			CustomLogger logger = new CustomLogger();
+			logger.writeLog(Level.SEVERE, e.toString());
 		}
 		employeeOutput(l);
 	}
