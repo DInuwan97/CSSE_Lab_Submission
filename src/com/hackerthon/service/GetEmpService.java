@@ -31,6 +31,7 @@ public class GetEmpService extends UtilC {
 
 	private PreparedStatement ps;
 
+	// get db connection
 	public GetEmpService() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -38,10 +39,11 @@ public class GetEmpService extends UtilC {
 					p.getProperty("password"));
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.SEVERE, e.getMessage());
 		} 
 	}
 
+	// get employees
 	public void employeesFromXML() {
 
 		try {
@@ -62,10 +64,11 @@ public class GetEmpService extends UtilC {
 			}
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 	}
 
+	// create employee table
 	public void employeeTableCreate() {
 		try {
 			s = c.createStatement();
@@ -73,10 +76,11 @@ public class GetEmpService extends UtilC {
 			s.executeUpdate(UtilQ.Q("q1"));
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 	}
 
+	// add employee
 	public void employessAdd() {
 		try {
 			ps = c.prepareStatement(UtilQ.Q("q3"));
@@ -95,10 +99,11 @@ public class GetEmpService extends UtilC {
 			c.commit();
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 	}
 
+	// get employee from id
 	public void employeeGetById(String eid) {
 
 		Employee e = Employee.getInstance();
@@ -120,10 +125,11 @@ public class GetEmpService extends UtilC {
 			employeeOutput(l);
 		} catch (Exception ex) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 	}
 
+	// delete single employee
 	public void employeeDelete(String eid) {
 
 		try {
@@ -133,10 +139,11 @@ public class GetEmpService extends UtilC {
 		} catch (Exception e) {
 			// e.printStackTrace();
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 	}
 
+	// print employees
 	public void employeeDisplay() {
 
 		ArrayList<Employee> l = new ArrayList<Employee>();
@@ -155,11 +162,12 @@ public class GetEmpService extends UtilC {
 			}
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.toString());
+			logger.writeLog(Level.WARNING, e.getMessage());
 		}
 		employeeOutput(l);
 	}
 	
+	// print employee details to console
 	public void employeeOutput(ArrayList<Employee> l){
 		
 		System.out.println("Employee ID" + "\t\t" + "Full Name" + "\t\t" + "Address" + "\t\t" + "Faculty Name" + "\t\t"

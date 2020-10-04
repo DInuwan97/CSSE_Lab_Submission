@@ -20,7 +20,7 @@ public class ExecuteMain {
 		GetEmpService employeeService = new GetEmpService();
 		try {
 			UtilTransform.requestTransform();
-			employeeService.employeesFromXML();;
+			employeeService.employeesFromXML();
 			employeeService.employeeTableCreate();
 			employeeService.employessAdd();
 
