@@ -8,17 +8,7 @@ public class Employee {
 	public String facultyName;
 	public String department;
 	public String designation;
-	
-	private static Employee obj;
-	
-	private Employee() {}
-	
-	public static synchronized Employee getInstance() {
-		 if (obj==null) 
-	            obj = new Employee(); 
-	        return obj; 
-	}
-	
+			
 	public String getEmployeeId() {
 		return employeeId;
 	}

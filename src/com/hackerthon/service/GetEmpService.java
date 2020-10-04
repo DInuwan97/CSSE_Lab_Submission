@@ -8,6 +8,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.sql.PreparedStatement;
 import javax.xml.xpath.XPathExpressionException;
 import com.hackerthon.common.UtilTransform;
+import com.hackerthon.config.GlobalConstants;
 import com.hackerthon.logger.CustomLogger;
 
 import java.sql.ResultSet;
@@ -19,29 +20,49 @@ import java.io.IOException;
 import com.hackerthon.model.Employee;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.concurrent.AbstractExecutorService;
+
 import com.hackerthon.common.UtilC;
 
 public class GetEmpService extends UtilC {
 
+	//declaring static variables
 	private final ArrayList<Employee> el = new ArrayList<Employee>();
-
 	private static Connection c;
-
 	private static Statement s;
-
 	private PreparedStatement ps;
+	private static GetEmpService singleInstance = null; 
+	public static final Logger log = Logger.getLogger(AbstractExecutorService.class.getName());
 
-	// get db connection
+	
+	//get db connection
 	public GetEmpService() {
+		
+		CustomLogger logger = new CustomLogger();
+		
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			c = DriverManager.getConnection(p.getProperty("url"), p.getProperty("username"),
-					p.getProperty("password"));
-		} catch (Exception e) {
-			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.SEVERE, e.getMessage());
+			Class.forName(GlobalConstants.DRIVER_NAME);
+			c = DriverManager.getConnection(p.getProperty(GlobalConstants.URL), p.getProperty(GlobalConstants.USERNAME),
+					p.getProperty(GlobalConstants.PASSWORD));
+		}catch (NullPointerException e) {
+			logger.writeLog(Level.SEVERE, e.toString());
+		} 
+		catch (SQLException e) {
+			logger.writeLog(Level.SEVERE, e.toString());
+		} 
+		catch (ClassNotFoundException e) {
+			logger.writeLog(Level.SEVERE, e.toString());
 		} 
 	}
+	
+	//using singleton
+	public static GetEmpService getInstance() 
+    { 
+        if (singleInstance == null) 
+        	singleInstance = new GetEmpService(); 
+  
+        return singleInstance; 
+    } 
 
 	// get employees
 	public void employeesFromXML() {
@@ -51,14 +72,14 @@ public class GetEmpService extends UtilC {
 			for (int i = 0; i < s; i++) {
 				Map<String, String> l = UtilTransform.XMLXPATHS().get(i);
 				
-				Employee emp = Employee.getInstance();
+				Employee emp = new Employee();
 				
-				emp.setEmployeeId(l.get("XpathEmployeeIDKey"));
-				emp.setFullName(l.get("XpathEmployeeNameKey"));
-				emp.setAddress(l.get("XpathEmployeeAddressKey"));
-				emp.setFacultyName(l.get("XpathFacultyNameKey"));
-				emp.setDepartment(l.get("XpathDepartmentKey"));
-				emp.setDepartment(l.get("XpathDesignationKey"));
+				emp.setEmployeeId(l.get(GlobalConstants.X_PATH_EMPLOYEE_ID_KEY));
+				emp.setFullName(l.get(GlobalConstants.X_PATH_EMPLOYEE_NAME_KEY));
+				emp.setAddress(l.get(GlobalConstants.X_PATH_EMPLOYEE_ADDRESS_KEY));
+				emp.setFacultyName(l.get(GlobalConstants.X_PATH_EMPLOYEE_FACULTY_NAME_KEY));
+				emp.setDepartment(l.get(GlobalConstants.X_PATH_EMPLOYEE_DEPARTMENT_KEY));
+				emp.setDesignation(l.get(GlobalConstants.X_PATH_EMPLOYEE_DESIGNATION_KEY));
 				el.add(emp);
 				System.out.println(emp.toString() + "\n");
 			}
@@ -72,8 +93,8 @@ public class GetEmpService extends UtilC {
 	public void employeeTableCreate() {
 		try {
 			s = c.createStatement();
-			s.executeUpdate(UtilQ.Q("q2"));
-			s.executeUpdate(UtilQ.Q("q1"));
+			s.executeUpdate(UtilQ.Q(GlobalConstants.Q2));
+			s.executeUpdate(UtilQ.Q(GlobalConstants.Q1));
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
 			logger.writeLog(Level.WARNING, e.getMessage());
@@ -83,16 +104,16 @@ public class GetEmpService extends UtilC {
 	// add employee
 	public void employessAdd() {
 		try {
-			ps = c.prepareStatement(UtilQ.Q("q3"));
+			ps = c.prepareStatement(UtilQ.Q(GlobalConstants.Q3));
 			c.setAutoCommit(false);
 			for(int i = 0; i < el.size(); i++){
 				Employee e = el.get(i);
-				ps.setString(1, e.getEmployeeId());
-				ps.setString(2, e.getFullName());
-				ps.setString(3, e.getAddress());
-				ps.setString(4, e.getFacultyName());
-				ps.setString(5, e.getDepartment());
-				ps.setString(6, e.getDesignation());
+				ps.setString(GlobalConstants.COLUMN_INDEX_ONE, e.getEmployeeId());
+				ps.setString(GlobalConstants.COLUMN_INDEX_TWO, e.getFullName());
+				ps.setString(GlobalConstants.COLUMN_INDEX_THREE, e.getAddress());
+				ps.setString(GlobalConstants.COLUMN_INDEX_FOUR, e.getFacultyName());
+				ps.setString(GlobalConstants.COLUMN_INDEX_FIVE, e.getDepartment());
+				ps.setString(GlobalConstants.COLUMN_INDEX_SIX, e.getDesignation());
 				ps.addBatch();
 			}
 			ps.executeBatch();
@@ -106,19 +127,19 @@ public class GetEmpService extends UtilC {
 	// get employee from id
 	public void employeeGetById(String eid) {
 
-		Employee e = Employee.getInstance();
+		Employee e = new Employee();
 		
 		try {
-			ps = c.prepareStatement(UtilQ.Q("q4"));
-			ps.setString(1, eid);
+			ps = c.prepareStatement(UtilQ.Q(GlobalConstants.Q4));
+			ps.setString(GlobalConstants.COLUMN_INDEX_ONE, eid);
 			ResultSet R = ps.executeQuery();
 			while (R.next()) {
-				e.setEmployeeId(R.getString(1));
-				e.setFullName(R.getString(2));
-				e.setAddress(R.getString(3));
-				e.setFacultyName(R.getString(4));
-				e.setDepartment(R.getString(5));
-				e.setDesignation(R.getString(6));
+				e.setEmployeeId(R.getString(GlobalConstants.COLUMN_INDEX_ONE));
+				e.setFullName(R.getString(GlobalConstants.COLUMN_INDEX_TWO));
+				e.setAddress(R.getString(GlobalConstants.COLUMN_INDEX_THREE));
+				e.setFacultyName(R.getString(GlobalConstants.COLUMN_INDEX_FOUR));
+				e.setDepartment(R.getString(GlobalConstants.COLUMN_INDEX_FIVE));
+				e.setDesignation(R.getString(GlobalConstants.COLUMN_INDEX_SIX));
 			}
 			ArrayList<Employee> l = new ArrayList<Employee>();
 			l.add(e);
@@ -133,8 +154,8 @@ public class GetEmpService extends UtilC {
 	public void employeeDelete(String eid) {
 
 		try {
-			ps = c.prepareStatement(UtilQ.Q("q6"));
-			ps.setString(1, eid);
+			ps = c.prepareStatement(UtilQ.Q(GlobalConstants.Q6));
+			ps.setString(GlobalConstants.COLUMN_INDEX_ONE, eid);
 			ps.executeUpdate();
 		} catch (Exception e) {
 			// e.printStackTrace();
@@ -146,25 +167,25 @@ public class GetEmpService extends UtilC {
 	// print employees
 	public void employeeDisplay() {
 
-		ArrayList<Employee> l = new ArrayList<Employee>();
+		ArrayList<Employee> list = new ArrayList<Employee>();
 		try {
-			ps = c.prepareStatement(UtilQ.Q("q5"));
+			ps = c.prepareStatement(UtilQ.Q(GlobalConstants.Q5));
 			ResultSet r = ps.executeQuery();
 			while (r.next()) {
-				Employee e = Employee.getInstance();
-				e.setEmployeeId(r.getString(1));
-				e.setFullName(r.getString(2));
-				e.setAddress(r.getString(3));
-				e.setFacultyName(r.getString(4));
-				e.setDepartment(r.getString(5));
-				e.setDesignation(r.getString(6));
-				l.add(e);
+				Employee e = new Employee();
+				e.setEmployeeId(r.getString(GlobalConstants.COLUMN_INDEX_ONE));
+				e.setFullName(r.getString(GlobalConstants.COLUMN_INDEX_TWO));
+				e.setAddress(r.getString(GlobalConstants.COLUMN_INDEX_THREE));
+				e.setFacultyName(r.getString(GlobalConstants.COLUMN_INDEX_FOUR));
+				e.setDepartment(r.getString(GlobalConstants.COLUMN_INDEX_FIVE));
+				e.setDesignation(r.getString(GlobalConstants.COLUMN_INDEX_SIX));
+				list.add(e);
 			}
 		} catch (Exception e) {
 			CustomLogger logger = new CustomLogger();
 			logger.writeLog(Level.WARNING, e.getMessage());
 		}
-		employeeOutput(l);
+		employeeOutput(list);
 	}
 	
 	// print employee details to console
