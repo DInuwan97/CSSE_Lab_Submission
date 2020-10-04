@@ -146,7 +146,7 @@ public class GetEmpService extends UtilC {
 			employeeOutput(l);
 		} catch (Exception ex) {
 			CustomLogger logger = new CustomLogger();
-			logger.writeLog(Level.WARNING, e.getMessage());
+			logger.writeLog(Level.WARNING, ex.getMessage());
 		}
 	}
 
